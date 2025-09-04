@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+
+    <!-- Profile Card -->
+    <div class="shadow-lg rounded-4 overflow-hidden">
+        
+        <!-- Header Section (Elegant Gradient Background) -->
+        <div class="text-center p-5" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+            {% if freelancer.profile_photo %}
+                <img src="{{ freelancer.profile_photo.url }}" 
+                     alt="{{ freelancer.display_name }}" 
+                     class="rounded-circle shadow mb-3"
+                     style="width: 140px; height: 140px; object-fit: cover;">
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center bg-secondary text-white rounded-circle mb-3 shadow"
+                     style="width: 140px; height: 140px; font-size: 3rem;">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+            {% endif %}
+            <h2 class="fw-bold mb-1">{{ freelancer.display_name }}</h2>
+            <p class="text-muted mb-0">{{ freelancer.tagline|default:"No tagline provided" }}</p>
+        </div>
+
+        <!-- Body Section -->
+        <div class="p-4 p-md-5 bg-white">
+
+            <!-- Skills -->
+            {% if skills_list %}
+            <div class="mb-4">
+                <h4 class="fw-semibold text-primary mb-3">Skills</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in skills_list %}
+                        <span class="badge bg-secondary px-3 py-2">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Professional Info -->
+            <div class="mb-4">
+                <h4 class="fw-semibold text-primary mb-3">Professional Info</h4>
+                <ul class="list-unstyled">
+                    {% if freelancer.qualifications %}
+                    <li><strong>Qualifications:</strong> {{ freelancer.qualifications }}</li>
+                    {% endif %}
+                    {% if freelancer.achievements %}
+                    <li><strong>Achievements:</strong> {{ freelancer.achievements }}</li>
+                    {% endif %}
+                    {% if freelancer.portfolio_link %}
+                    <li><strong>Portfolio:</strong>
+                        <a href="{{ freelancer.portfolio_link }}" target="_blank" class="text-decoration-none">
+                            {{ freelancer.portfolio_link }}
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Experience -->
+            <div class="mb-4">
+                <h4 class="fw-semibold text-primary mb-3">Experience</h4>
+                <ul class="list-unstyled">
+                    <li><strong>Projects Completed:</strong> {{ freelancer.projects_completed }}</li>
+                    {% if freelancer.testimonials %}
+                    <li><strong>Testimonials:</strong> {{ freelancer.testimonials }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Preferences -->
+            <div class="mb-4">
+                <h4 class="fw-semibold text-primary mb-3">Preferences</h4>
+                <ul class="list-unstyled">
+                    {% if freelancer.preferred_platforms %}
+                    <li><strong>Preferred Platforms:</strong> {{ freelancer.preferred_platforms }}</li>
+                    {% endif %}
+                    {% if freelancer.preferred_tone %}
+                    <li><strong>Preferred Proposal Tone:</strong> {{ freelancer.preferred_tone }}</li>
+                    {% endif %}
+                    {% if freelancer.location %}
+                    <li><strong>Location:</strong> {{ freelancer.location }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="text-center mt-4">
+                <a href="mailto:{{ freelancer.user.email }}" class="btn btn-jrp px-4">
+                    <i class="bi bi-envelope me-2"></i>Contact {{ freelancer.display_name }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

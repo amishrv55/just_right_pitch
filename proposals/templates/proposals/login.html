@@ -1,0 +1,131 @@
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background: url("/media/freelancer_photos/login_bg_image.jpg") no-repeat center center;
+        min-height: 100vh;
+        display: flex;
+        margin: 0;
+    }
+
+    .left-side, .right-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    .left-side {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .right-side {
+        background-size: cover;
+        color: white;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .right-content {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 450px;
+    }
+
+    .feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .feature i {
+        color: #00ffb7;
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+
+    .btn-login {
+        width: 100%;
+        background: #007bff;
+        color: white;
+        font-weight: bold;
+        border-radius: 6px;
+        padding: 0.6rem;
+    }
+
+    .btn-login:hover {
+        background: #0056b3;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #aaa;
+        margin: 1rem 0;
+    }
+    .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+    }
+    .divider:not(:empty)::before {
+        margin-right: 0.5em;
+    }
+    .divider:not(:empty)::after {
+        margin-left: 0.5em;
+    }
+</style>
+
+<div class="left-side">
+    <div class="login-card">
+        <h2 class="text-center">Welcome Back 👋</h2>
+        <p class="text-center text-muted mb-3">Log in to manage your proposals & clients.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-login mt-2">Log In</button>
+        </form>
+
+        <div class="text-end mt-2">
+            <a href="{% url 'password_reset' %}" class="text-muted small">Forgot password?</a>
+        </div>
+
+        <div class="divider">or</div>
+
+        <p class="text-center mt-3">
+            Don't have an account?
+            <a href="{% url 'signup' %}"><strong>Sign up here</strong></a>
+        </p>
+    </div>
+</div>
+
+<div class="right-side">
+    <div class="right-content">
+        <h1>🚀 Just Right Pitch</h1>
+        <p class="lead mb-4">Organize, track, and win more projects with ease.</p>
+
+        <div class="feature"><i class="bi bi-check-circle-fill"></i> Track proposals & conversations</div>
+        <div class="feature"><i class="bi bi-check-circle-fill"></i> Analyze success & failures</div>
+        <div class="feature"><i class="bi bi-check-circle-fill"></i> Get AI-powered insights & reports</div>
+        <div class="feature"><i class="bi bi-check-circle-fill"></i> Simple, clutter-free interface</div>
+    </div>
+</div>
+
+{% endblock %}

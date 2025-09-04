@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container">
+  <h2 class="page-title mb-3">Create Proposal</h2>
+  <p class="page-subtitle mb-4">Choose AI generation or write your own.</p>
+
+  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+    <div class="d-flex flex-wrap gap-2">
+
+      <a href="{% url 'credits_request' %}" class="btn btn-primary"><i class="bi bi-lightning-charge me-1"></i> Request AI Credits</a>
+    
+      <a class="nav-link {% if request.resolver_match.url_name in 'credits_overview credits_request' %}active{% endif %}"
+                    href="{% url 'credits_overview' %}">
+                    <h6 class="credits"><i class="bi bi-lightning-charge me-1"></i>
+                    AI Credits</h6>
+                    {% if user.profile.ai_credits is not None %}
+                <span class="badge bg-warning text-dark ms-1">{{ user.profile.ai_credits }}</span>
+                {% endif %}
+                </a>
+  </div>
+  </div>
+<br>
+<br>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs" id="proposalTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="ai-tab" data-bs-toggle="tab" data-bs-target="#ai" type="button" role="tab">
+        🤖 AI Proposal
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual" type="button" role="tab">
+        ✍️ Write Myself
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+    <!-- AI Proposal -->
+    <div class="tab-pane fade show active" id="ai" role="tabpanel">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="generate">
+
+        <!-- Job Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Job Title</label>
+          {{ form.job_title|add_class:"form-control" }}
+          <small class="text-muted">Give a short title for this proposal (e.g., "Landing Page Copywriter").</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Platform</label>
+          {{ form.platform|add_class:"form-select" }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Tone</label>
+          {{ form.tone|add_class:"form-select" }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Job URL (optional)</label>
+          {{ form.job_url|add_class:"form-control" }}
+          <small class="text-muted">Paste a job link to auto-fetch description</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Job Description</label>
+          {{ form.job_description|add_class:"form-control"|attr:"rows:8" }}
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="submit" name="action" value="fetch" class="btn btn-outline-secondary">
+            🌐 Fetch from URL
+          </button>
+          <button type="submit" class="btn btn-primary px-4">
+            ⚡ Generate with AI
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Manual Proposal -->
+    <div class="tab-pane fade" id="manual" role="tabpanel">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="manual">
+
+        <!-- Job Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Job Title</label>
+          <input type="text" name="job_title" class="form-control" placeholder="Enter job title (e.g., Blog Post Writer)">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Job Description</label>
+          <textarea name="job_description_text" rows="10" class="form-control" placeholder="Write job_description here.."></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Platform</label>
+          <select name="platform" class="form-select">
+            <option value="Upwork">Upwork</option>
+            <option value="Freelancer">Freelancer</option>
+            <option value="Fiverr">Fiverr</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Tone (Optional)</label>
+          <select name="tone" class="form-select">
+            <option value="Professional">Professional</option>
+            <option value="Friendly">Friendly</option>
+            <option value="Concise">Concise</option>
+            <option value="Persuasive">Persuasive</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Proposal Text</label>
+          <textarea name="manual_proposal_text" rows="10" class="form-control" placeholder="Write your proposal here…"></textarea>
+        </div>
+
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4">
+            💾 Save Proposal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

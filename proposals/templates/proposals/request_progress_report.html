@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">📊 Request Progress Report</h2>
+    <p>Select month, platform, and status filters to generate your report.</p>
+
+    <div>
+        {% if messages %}
+  <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Month</label>
+            {{ form.month }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Year</label>
+            {{ form.year }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Platform</label>
+            {{ form.platform }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Status Filter</label>
+            {{ form.status_filter }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Request Report</button>
+    </form>
+</div>
+{% endblock %}

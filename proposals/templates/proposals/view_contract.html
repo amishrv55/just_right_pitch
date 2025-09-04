@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white">
+            <h4>Contract for Proposal #{{ contract.proposal.id }}</h4>
+        </div>
+        <div class="card-body">
+            <pre class="bg-light p-3 rounded">{{ contract.contract_text }}</pre>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            {% if not contract.signed_by_client %}
+                <button class="btn btn-success">Mark as Signed</button>
+            {% else %}
+                <span class="badge bg-success">Signed by Client</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

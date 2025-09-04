@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">🌍 Freelancer Directory</h2>
+
+    <!-- Search & Filter -->
+    <form method="get" class="row g-2 mb-4 justify-content-center">
+    <div class="col-md-3">
+        <input type="text" name="q" class="form-control" placeholder="Search by name"
+               value="{{ query }}">
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="skill" class="form-control" placeholder="Filter by skill"
+               value="{{ skill_filter }}">
+    </div>
+    <div class="col-md-3">
+        <select name="profession" class="form-select">
+            <option value="">Filter by profession</option>
+            {% for group, options in profession_choices %}
+                <optgroup label="{{ group }}">
+            {% for key, label in options %}
+                <option value="{{ key }}" {% if profession_filter == key %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+                </optgroup>
+            {% endfor %}
+        </select>
+
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">🔍 Search</button>
+    </div>
+    </form>
+
+    <!-- Freelancer Cards -->
+    <div class="row">
+        {% for f in freelancers %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card mb-4 shadow-sm border-0 h-100">
+                
+                <!-- Profile Photo -->
+                {% if f.profile_photo %}
+                    <img src="{{ f.profile_photo.url }}" alt="{{ f.display_name }}" 
+                         class="card-img-top" style="object-fit: cover; height: 220px;">
+                {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted" 
+                         style="height: 220px; font-size: 3rem;">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                {% endif %}
+
+                <div class="card-body text-center">
+                    <!-- Name -->
+                    <h5 class="card-title mb-1 fw-bold">{{ f.display_name }}</h5>
+                    <!-- Profession Badge -->
+                    <p>
+                    <span class="badge bg-secondary">{{ f.get_profession_display }}</span>
+                    </p>
+
+                    <p class="text-muted mb-2">{{ f.tagline|default:"No tagline provided" }}</p>
+
+                    <!-- Key Info -->
+                    <p class="mb-1"><span class="fw-semibold">Skills:</span> {{ f.skills }}</p>
+                    <p class="mb-1"><span class="fw-semibold">Projects Completed:</span> {{ f.projects_completed }}</p>
+                    {% if f.location %}
+                    <p class="mb-3"><span class="fw-semibold">Location:</span> {{ f.location }}</p>
+                    {% endif %}
+
+                    <!-- View Profile Button -->
+                    <a href="{% url 'freelancer_detail' f.id %}" class="btn btn-jrp w-100">
+                        View Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No freelancers found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

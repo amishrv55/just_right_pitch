@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Pending Credit Requests</h2>
+
+  {% if requests %}
+    <table class="table table-bordered table-striped mt-3">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Amount Requested</th>
+          <th>Message</th>
+          <th>Requested At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+          <tr>
+            <td>{{ r.user.username }}</td>
+            <td>{{ r.amount_requested }}</td>
+            <td>{{ r.message|default:"—" }}</td>
+            <td>{{ r.created_at|date:"M d, Y H:i" }}</td>
+            <td>
+              <a href="{% url 'credit_request_action' r.id 'approve' %}" class="btn btn-success btn-sm">Approve</a>
+              <a href="{% url 'credit_request_action' r.id 'reject' %}" class="btn btn-danger btn-sm">Reject</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No pending credit requests.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h2 class="mb-4 text-center">📘 About Just Right Pitch (JRP)</h2>
+            
+            <p class="lead text-center">
+                Just Right Pitch (JRP) is a simple yet powerful <strong>CRM application</strong> 
+                designed for freelancers and professionals to manage proposals, clients, and projects — all in one place.
+            </p>
+
+            <hr class="my-4">
+
+            <h5>✨ Our Mission</h5>
+            <p>
+                To empower freelancers and independent professionals with tools that save time, 
+                organize work, and help close more deals with clarity and professionalism.
+            </p>
+
+            <h5>🚀 What We Offer</h5>
+            <ul>
+                <li>Create, manage, and track proposals effortlessly.</li>
+                <li>Maintain a personal client database and history of interactions.</li>
+                <li>Track contracts, payments, and project progress in one dashboard.</li>
+                <li>Analytics to understand your performance and win more business.</li>
+            </ul>
+
+            <h5>🔒 Our Values</h5>
+            <ul>
+                <li><strong>Privacy First:</strong> Your data stays yours. We do not share with third parties.</li>
+                <li><strong>Simplicity:</strong> No clutter, no ads — just the tools you need.</li>
+                <li><strong>Security:</strong> Built with security best practices to keep your data safe.</li>
+            </ul>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Join JRP Today</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>➕ Add or Assign Client to Proposal #{{ proposal.id }}</h2>
+
+    <div class="row">
+        <!-- Assign Existing Client -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">Assign Existing Client</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="existing_client" class="form-label">Select Client</label>
+                            <select name="existing_client" id="existing_client" class="form-select" required>
+                                <option value="">-- Choose Client --</option>
+                                {% for client in existing_clients %}
+                                    <option value="{{ client.id }}">{{ client.name }} ({{ client.email }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Assign Client</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Client -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">Add New Client</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Client Name</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Add Client & Assign</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">⬅ Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

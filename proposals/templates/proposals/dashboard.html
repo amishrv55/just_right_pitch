@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <!-- Page Header -->
+  <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+    <div>
+      <br>
+<br>
+      <h2 class="page-title mb-1">My Proposals</h2>
+      <p class="page-subtitle mb-0">Organize, track, and convert your best work — all in one place.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{% url 'export_proposals_csv' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-filetype-csv me-1"></i> Export CSV
+      </a>
+      <a href="{% url 'export_proposals_excel' %}" class="btn btn-outline-success">
+        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export Excel
+      </a>
+      <a href="{% url 'create_proposal' %}" class="btn btn-jrp">
+        <i class="bi bi-plus-lg me-1"></i> New Proposal
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Metrics -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+      <div class="metric jrp-card">
+        <i class="bi bi-kanban"></i>
+        <div>
+          <div class="text-muted">Total</div>
+          <strong>{{ proposals|length }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="metric jrp-card">
+        <i class="bi bi-trophy"></i>
+        <div>
+          <div class="text-muted">Won</div>
+          <strong>{{ won_count|default:0 }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="metric jrp-card">
+        <i class="bi bi-hourglass-split"></i>
+        <div>
+          <div class="text-muted">Pending</div>
+          <strong>{{ pending_count|default:0 }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  {% if scheduled_jobs %}
+<div class="alert alert-info jrp-card mb-4">
+  <strong>🕒 Scheduled Jobs:</strong>
+  <ul class="mb-0">
+    {% for job in scheduled_jobs %}
+      <li>{{ job.id }} → Next run: {{ job.next_run|date:"M d, Y H:i" }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+
+  <!-- Alerts -->
+  {% if proposal_alerts or payment_alerts %}
+  <div class="alert alert-warning jrp-card">
+    <div class="d-flex align-items-start gap-2">
+      <i class="bi bi-exclamation-triangle-fill mt-1"></i>
+      <div>
+        <strong class="d-block mb-1">Heads up</strong>
+        <ul class="mb-0 ps-3">
+          {% for alert in proposal_alerts %}<li>{{ alert }}</li>{% endfor %}
+          {% for alert in payment_alerts %}<li>{{ alert }}</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+  <div>
+
+    <div class="card shadow-sm mb-4">
+  <div class="card-body text-center">
+    <h5 class="card-title">📊 Get Your Monthly Progress Report</h5>
+    <p class="text-muted">Analyze all your conversations, wins/losses, and get AI-powered insights.</p>
+    <a href="{% url 'request_progress_report' %}" class="btn btn-primary">
+      <i class="bi bi-bar-chart"></i> Request Report
+    </a>
+  </div>
+</div>
+
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="jrp-card p-3 p-md-4 mb-4 sticky-lg-top-80">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-5">
+        <label class="form-label fw-semibold">Search</label>
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search proposals…" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Platform</label>
+        <select name="platform" class="form-select">
+          <option value="ALL">All Platforms</option>
+          {% for pf in platforms %}
+            <option value="{{ pf }}" {% if pf == platform_filter %}selected{% endif %}>{{ pf }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Status</label>
+        <select name="status" class="form-select">
+          <option value="ALL">All Statuses</option>
+          {% for st in statuses %}
+            <option value="{{ st }}" {% if st == status_filter %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-1 d-grid">
+        <button type="submit" class="btn btn-jrp">
+          <i class="bi bi-funnel me-1"></i> Filter
+        </button>
+      </div>
+    </form>
+
+    {% if search_query or platform_filter and platform_filter != 'ALL' or status_filter and status_filter != 'ALL' %}
+    <div class="mt-3 d-flex flex-wrap gap-2">
+      {% if search_query %}
+        <span class="jrp-chip"><i class="bi bi-search"></i> {{ search_query }}</span>
+      {% endif %}
+      {% if platform_filter and platform_filter != 'ALL' %}
+        <span class="jrp-chip"><i class="bi bi-grid"></i> {{ platform_filter }}</span>
+      {% endif %}
+      {% if status_filter and status_filter != 'ALL' %}
+        <span class="jrp-chip"><i class="bi bi-check2-circle"></i> {{ status_filter }}</span>
+      {% endif %}
+      <a href="{% url 'dashboard' %}" class="ms-auto text-decoration-none">Clear filters</a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Proposal Cards -->
+  <div class="row g-3 g-md-4">
+    {% for p in proposals %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card proposal-card jrp-card h-100">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="card-title mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-briefcase"></i> {{ p.platform }}
+              </h5>
+              <div class="proposal-meta">{{ p.created_at|date:"M d, Y" }}</div>
+            </div>
+            <div class="text-end">
+              <span class="pill {% if p.status == 'Won' %}pill-won{% elif p.status == 'Lost' %}pill-lost{% elif p.status == 'Sent' %}pill-sent{% else %}pill-draft{% endif %}">{{ p.status }}</span>
+              <span class="pill {% if p.confidence == 'Green' %}confidence-green{% elif p.confidence == 'Orange' %}confidence-orange{% else %}confidence-red{% endif %}">{{ p.confidence }}</span>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div>
+            <h5>
+            Job Title: {{ p.job_title|truncatechars:50 }}
+              </h5>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <p class="text-muted mb-3 flex-grow-1"><em>{{ p.proposal_text|truncatechars:160 }}</em></p>
+
+          <form method="post" action="{% url 'update_proposal_tracking' p.id %}" class="mt-auto">
+            {% csrf_token %}
+            <div class="row g-2">
+              <div class="col-6">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select form-select-sm">
+                  {% for val, label in status_choices %}
+                    <option value="{{ val }}" {% if p.status == val %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Confidence</label>
+                <select name="confidence" class="form-select form-select-sm">
+                  {% for val, label in confidence_choices %}
+                    <option value="{{ val }}" {% if p.confidence == val %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Note</label>
+                <input type="text" name="note" value="{{ p.note }}" class="form-control form-control-sm" placeholder="Add a quick note…">
+              </div>
+              <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+                <div class="proposal-meta">
+                  {% if p.client %}
+                    <i class="bi bi-person-badge"></i> <strong>Client:</strong> {{ p.client.name }}
+                  {% else %}
+                    <span class="text-muted"><i class="bi bi-person-badge"></i> No client assigned</span>
+                  {% endif %}
+                </div>
+                <button type="submit" class="btn btn-jrp btn-sm">
+                  <i class="bi bi-save me-1"></i> Save
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="card-divider"></div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'proposal_detail' p.id %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-eye"></i> View</a>
+            <a href="{% url 'download_proposal_pdf' p.id %}" class="btn btn-outline-success btn-sm"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+            <a href="{% url 'contract_form' p.id %}" class="btn btn-outline-primary btn-sm"><i class="bi bi-journal-text"></i> Contract</a>
+            <a href="{% url 'add_payment' p.id %}" class="btn btn-outline-dark btn-sm"><i class="bi bi-cash-coin"></i> Payment</a>
+            <a href="{% url 'track_payments' p.id %}" class="btn btn-outline-info btn-sm"><i class="bi bi-graph-up"></i> Track</a>
+            <a href="{% url 'generate_invoice_pdf' p.id %}" class="btn btn-outline-warning btn-sm"><i class="bi bi-receipt"></i> Invoice</a>
+            <a href="{% url 'add_client_to_proposal' p.id %}" class="btn btn-outline-warning btn-sm"><i class="bi bi-person-plus"></i> Client</a>
+            <a href="{% url 'delete_proposal' p.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this proposal?');"><i class="bi bi-trash"></i> Delete</a>
+            <a href="{% url 'track_conversations' p.id %}" class="btn btn-outline-info btn-sm"><i class="bi bi-chat-dots"></i> Conversations</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="jrp-soft p-5 text-center">
+        <div class="display-6 mb-3">🗂️</div>
+        <h5 class="mb-2">No proposals yet</h5>
+        <p class="text-muted mb-3">Start by creating your first proposal and keep everything organized here.</p>
+        <a href="{% url 'create_proposal' %}" class="btn btn-jrp"><i class="bi bi-plus-lg me-1"></i> Create Proposal</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{% endblock %}

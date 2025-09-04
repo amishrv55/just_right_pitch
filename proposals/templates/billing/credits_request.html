@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h2 class="page-title mb-2">Request Credits (Offline Payment)</h2>
+  <p class="page-subtitle mb-4">Pay via UPI/Bank/Cash. We’ll verify and top-up your credits.</p>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="jrp-card p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Credits Needed</label>
+            {{ form.amount }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Message (optional)</label>
+            {{ form.message }}
+          </div>
+          <button class="btn btn-primary">Submit Request</button>
+          <a href="{% url 'credits_overview' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="jrp-card p-4">
+        <h5 class="mb-2">How it works</h5>
+        <ol class="mb-3">
+          <li>Submit a request with the number of credits.</li>
+          <li>We’ll contact you with UPI/Bank details.</li>
+          <li>Once paid, we top-up your credits.</li>
+        </ol>
+        <div class="small text-muted">Typical turnaround: same business day.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

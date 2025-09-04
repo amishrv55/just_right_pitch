@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Conversation History</h3>
+        <a href="{% url 'add_conversation' proposal.id %}" class="btn btn-jrp">
+            <i class="bi bi-plus-circle me-1"></i> Add Conversation
+        </a>
+    </div>
+    <!-- Download Button -->
+    <div class="mb-3 text-end">
+        <a href="{% url 'download_conversations_pdf' proposal.id %}" class="btn btn-outline-primary">
+            <i class="bi bi-file-earmark-pdf"></i> Download Conversations PDF
+        </a>
+    </div>
+
+    <div>
+        <h5 class="mb-3">Conversations for {{ proposal.job_title|truncatechars:60 }}</h5>
+    </div>
+
+    {% if conversations %}
+    <div class="timeline">
+        {% for conv in conversations %}
+        <div class="timeline-item {% if conv.sender == 'freelancer' %}text-start{% else %}text-end{% endif %}">
+            <div class="p-3 rounded shadow-sm mb-3 {% if conv.sender == 'freelancer' %}bg-light{% else %}bg-primary text-white{% endif %}">
+                <small class="d-block mb-1">
+                    <strong>{{ conv.sender|title }}</strong> — {{ conv.date|date:"M d, Y H:i" }}
+                </small>
+                <p class="mb-0">{{ conv.message }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">No conversations recorded yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

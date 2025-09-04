@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h2 class="mb-4 text-center">✏️ Edit My Freelancer Profile</h2>
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Basic Info -->
+                        <h5 class="mb-3 text-primary">👤 Basic Information</h5>
+                        <div class="mb-3">
+                            <label for="id_display_name" class="form-label">Display Name</label>
+                            {{ form.display_name|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_profile_photo" class="form-label">Profile Photo</label>
+                            {{ form.profile_photo|add_class:"form-control" }}
+                            <div class="form-text">Upload a square or rectangular image for best results.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_tagline" class="form-label">Tagline</label>
+                            {{ form.tagline|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_profession" class="form-label">Profession</label>
+                            {{ form.profession }}
+                        </div>
+                        
+                        <hr>
+
+                        <!-- Professional Info -->
+                        <h5 class="mb-3 text-primary">💼 Professional Information</h5>
+                        <div class="mb-3">
+                            <label for="id_skills" class="form-label">Skills</label>
+                            {{ form.skills|add_class:"form-control" }}
+                            <div class="form-text">Enter comma-separated skills (e.g., Python, Django, Data Analysis).</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_qualifications" class="form-label">Qualifications</label>
+                            {{ form.qualifications|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_achievements" class="form-label">Achievements</label>
+                            {{ form.achievements|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_portfolio_link" class="form-label">Portfolio Link</label>
+                            {{ form.portfolio_link|add_class:"form-control" }}
+                        </div>
+                        
+                        <hr>
+
+                        <!-- Experience -->
+                        <h5 class="mb-3 text-primary">📊 Experience</h5>
+                        <div class="mb-3">
+                            <label for="id_projects_completed" class="form-label">Projects Completed</label>
+                            {{ form.projects_completed|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_testimonials" class="form-label">Testimonials</label>
+                            {{ form.testimonials|add_class:"form-control" }}
+                        </div>
+
+                        <hr>
+
+                        <!-- Preferences -->
+                        <h5 class="mb-3 text-primary">⚙️ Preferences</h5>
+                        <div class="mb-3">
+                            <label for="id_preferred_platforms" class="form-label">Preferred Platforms</label>
+                            {{ form.preferred_platforms|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_preferred_tone" class="form-label">Preferred Proposal Tone</label>
+                            {{ form.preferred_tone|add_class:"form-control" }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_location" class="form-label">Location</label>
+                            {{ form.location|add_class:"form-control" }}
+                        </div>
+
+                        <hr>
+
+                        <!-- Visibility Toggle -->
+                        <div class="form-check mb-3">
+                            {{ form.is_visible|add_class:"form-check-input" }}
+                            <label class="form-check-label" for="id_is_visible">
+                                Show my profile publicly in the Freelancer Directory
+                            </label>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'freelancer_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">💾 Save Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Card -->
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h3 class="mb-0 text-center">Edit Your Profile</h3>
+                    <p class="mb-0 text-center small text-white-50">
+                        Complete your profile so proposals are always personalized
+                    </p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="id_full_name" class="form-label fw-bold">Full Name</label>
+                            <input type="text" 
+                                   name="full_name" 
+                                   value="{{ form.full_name.value|default:'' }}"
+                                   class="form-control form-control-lg rounded-3" 
+                                   id="id_full_name" 
+                                   placeholder="John Doe"
+                                   required>
+                            <div class="form-text">This will appear at the end of your proposals.</div>
+                        </div>
+
+                        <!-- Portfolio -->
+                        <div class="mb-3">
+                            <label for="id_portfolio" class="form-label fw-bold">Portfolio / Bio</label>
+                            <textarea name="portfolio" 
+                                      id="id_portfolio"
+                                      class="form-control rounded-3" 
+                                      rows="3"
+                                      placeholder="Brief introduction and portfolio links">{{ form.portfolio.value|default:'' }}</textarea>
+                        </div>
+
+                        <!-- Skills -->
+                        <div class="mb-3">
+                            <label for="id_skills" class="form-label fw-bold">Skills</label>
+                            <textarea name="skills" 
+                                      id="id_skills"
+                                      class="form-control rounded-3" 
+                                      rows="2"
+                                      placeholder="e.g., Python, Django, AI/ML">{{ form.skills.value|default:'' }}</textarea>
+                        </div>
+
+                        <!-- Preferred Tone -->
+                        <div class="mb-4">
+                            <label for="id_preferred_tone" class="form-label fw-bold">Preferred Proposal Tone</label>
+                            {{ form.preferred_tone|add_class:"form-select form-select-lg rounded-3" }}
+                        </div>
+
+                        <!-- Save Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg rounded-3 shadow-sm">
+                                <i class="bi bi-save me-2"></i> Save Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center small text-muted">
+                    Your details are private and only used to personalize proposals.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

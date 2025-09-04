@@ -1,0 +1,133 @@
+/* Base */
+body {
+  background-color: #f8f9fb;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* Navbar */
+.jrp-navbar {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.navbar-brand {
+  font-weight: 700;
+  font-size: 2.0rem;
+}
+.navbar .nav-link {
+  font-weight: 500;
+  color: #475569;
+  margin-left: .5rem;
+}
+.navbar .nav-link.active {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+/* Page Header */
+.page-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+}
+.page-subtitle {
+  font-size: 0.95rem;
+  color: #10295d;
+}
+
+/* Metrics */
+.metric {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.metric i {
+  font-size: 1.5rem;
+  color: #4f46e5;
+}
+.metric strong {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Proposal Cards */
+.proposal-card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+}
+.proposal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+}
+.proposal-meta {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+.card-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 0.75rem 0;
+}
+
+/* Buttons */
+.btn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+}
+.btn-primary {
+  background: #4f46e5;
+  border: none;
+}
+.btn-primary:hover {
+  background: #4338ca;
+}
+.btn-outline-secondary,
+.btn-outline-success {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+.btn-outline-secondary:hover,
+.btn-outline-success:hover {
+  background: #f1f5f9;
+}
+
+/* Pills */
+.pill {
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+/* Footer */
+.jrp-footer {
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+.jrp-footer .footer-link {
+  color: #6b7280;
+  text-decoration: none;
+  margin: 0 0.25rem;
+}
+.jrp-footer .footer-link:hover {
+  color: #4f46e5;
+}
+
+.pill-won { background: #ecfdf5; color: #047857; }
+.pill-lost { background: #fef2f2; color: #b91c1c; }
+.pill-sent { background: #eef2ff; color: #3730a3; }
+.pill-draft { background: #f1f5f9; color: #334155; }

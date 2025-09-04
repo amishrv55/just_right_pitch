@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="m-0">Generate Contract – Proposal #{{ proposal.id }}</h5>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">First Party (You)</label>
+                <input type="text" name="first_party" class="form-control" value="{{ default_first_party }}" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Second Party (Client)</label>
+                <input type="text" name="second_party" class="form-control" value="{{ default_second_party }}" placeholder="Client / Company name" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Effective Date</label>
+                <input type="date" name="effective_date" class="form-control" value="{{ today }}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Platform</label>
+                <input type="text" class="form-control" value="{{ proposal.platform }}" disabled>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Project Description</label>
+                <textarea name="project_description" rows="6" class="form-control" required>{{ default_description }}</textarea>
+                <div class="form-text">Pre-filled from the proposal/job; edit for accuracy.</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Terms & Conditions</label>
+                <textarea name="terms" rows="8" class="form-control" required>{{ default_terms }}</textarea>
+                <div class="form-text">A sensible default is provided; tailor as needed.</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Other Considerations (optional)</label>
+                <textarea name="other_considerations" rows="4" class="form-control">{{ default_other }}</textarea>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-success">Generate PDF</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">This contract is generated on-demand and not stored on our servers. Save the PDF securely after download.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Contract – Proposal #{{ proposal.id }}</title>
+</head>
+<body>
+  <div class="heading">
+    <h1>Service Agreement</h1>
+    <div class="meta">
+      Proposal ID: {{ proposal.id }} &nbsp;|&nbsp; Effective Date: {{ effective_date }}<br>
+      Generated on {{ generated_on }}
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="badge">Parties</span>
+    <div class="box">
+      <p><strong>First Party (Contractor):</strong> {{ first_party }}</p>
+      <p><strong>Second Party (Client):</strong> {{ second_party }}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="badge">Project</span>
+    <div class="box">
+      <p><strong>Platform:</strong> {{ proposal.platform }}</p>
+      <p><strong>Summary:</strong></p>
+      <p style="white-space: pre-wrap;">{{ project_description }}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="badge">Terms & Conditions</span>
+    <div class="box" style="white-space: pre-wrap;">{{ terms }}</div>
+  </div>
+
+  {% if other_considerations %}
+  <div class="section">
+    <span class="badge">Other Considerations</span>
+    <div class="box" style="white-space: pre-wrap;">{{ other_considerations }}</div>
+  </div>
+  {% endif %}
+
+  <div class="signatures">
+    <div class="sig">
+      <p><strong>First Party Signature:</strong></p>
+      <div class="sig-line"></div>
+      <p>{{ first_party }}</p>
+      <p class="meta">Date: ______________________</p>
+    </div>
+    <div class="sig">
+      <p><strong>Second Party Signature:</strong></p>
+      <div class="sig-line"></div>
+      <p>{{ second_party }}</p>
+      <p class="meta">Date: ______________________</p>
+    </div>
+  </div>
+</body>
+</html>

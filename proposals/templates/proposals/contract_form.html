@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4>Generate Contract for Proposal #{{ proposal.id }}</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'generate_contract_pdf_simple' %}">
+                {% csrf_token %}
+                <input type="hidden" name="proposal_id" value="{{ proposal.id }}">
+
+                <div class="mb-3">
+                    <label class="form-label">First Party Name</label>
+                    <input type="text" name="first_party" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Second Party Name</label>
+                    <input type="text" name="second_party" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Effective Date</label>
+                    <input type="date" name="effective_date" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Terms & Conditions</label>
+                    <textarea name="terms" rows="6" class="form-control" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Generate Contract PDF</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

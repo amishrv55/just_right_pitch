@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Proposal Detail - Just Right Pitch{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Proposal Details</h2>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">← Back to Dashboard</a>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="platform" class="form-label fw-bold">Platform</label>
+        <input type="text" name="platform" value="{{ proposal.platform }}" class="form-control" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="tone" class="form-label fw-bold">Tone</label>
+        <input type="text" name="tone" value="{{ proposal.tone }}" class="form-control" readonly>
+    </div>
+
+    <div class="mb-3">
+        <label for="proposal_text" class="form-label fw-bold">Proposal Text</label>
+        <textarea name="proposal_text" rows="12" class="form-control">{{ proposal.proposal_text }}</textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success">💾 Save Changes</button>
+        <button type="button" class="btn btn-primary" id="copyBtn">📋 Copy</button>
+        <a href="{% url 'download_proposal_pdf' proposal.id %}" class="btn btn-outline-dark">⬇ Export PDF</a>
+    </div>
+</form>
+
+<!-- Copy Notification -->
+<div id="copyAlert" class="alert alert-success mt-3 d-none" role="alert">
+    Copied to clipboard!
+</div>
+
+<script>
+document.getElementById("copyBtn").addEventListener("click", function() {
+    let textArea = document.querySelector("textarea[name='proposal_text']");
+    textArea.select();
+    document.execCommand("copy");
+    document.getElementById("copyAlert").classList.remove("d-none");
+    setTimeout(() => {
+        document.getElementById("copyAlert").classList.add("d-none");
+    }, 1500);
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-3">Add Conversation</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Sender</label>
+                    <select name="sender" class="form-select" required>
+                        <option value="freelancer">Freelancer</option>
+                        <option value="client">Client</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Message</label>
+                    <textarea name="message" class="form-control" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-jrp">Save</button>
+                <a href="{% url 'track_conversations' proposal.id %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

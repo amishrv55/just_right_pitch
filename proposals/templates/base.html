@@ -1,0 +1,259 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Just Right Pitch{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        :root {
+            --jrp-primary: #4f46e5; /* Indigo */
+            --jrp-secondary: #10b981; /* Emerald */
+            --jrp-dark: #1f2937; /* Slate */
+            --jrp-light: #f9fafb; /* Background */
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.1rem; /* 16px */
+            color: #111827; /* near black text */
+            background-color: rgb(220, 220, 220);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .jrp-navbar {
+            background: var(--jrp-dark);
+        }
+        .jrp-navbar .navbar-brand,
+        .jrp-navbar .nav-link {
+            color: #f3f4f6 !important;
+            font-weight: 500;
+        }
+        .jrp-navbar .nav-link.active {
+            color: var(--jrp-primary) !important;
+            font-weight: 600;
+        }
+
+        /* Main */
+        main {
+            flex: 1;
+            padding-top: 92px;
+            padding-bottom: 40px;
+        }
+
+        /* Footer */
+        .jrp-footer {
+            background: var(--jrp-dark);
+            color: #9ca3af;
+            font-size: 1.2rem;
+        }
+        .jrp-footer .footer-link {
+            color: #9ca3af;
+            text-decoration: none;
+            margin: 0 6px;
+        }
+        .jrp-footer .footer-link:hover {
+            color: #fff;
+        }
+
+        /* Buttons */
+        .btn-jrp {
+            background: var(--jrp-primary);
+            color: #fff;
+            font-weight: 600;
+            border-radius: .5rem;
+            font-size: 0.9rem;
+        }
+        .btn-jrp:hover {
+            background: #4338ca;
+            color: #fff;
+        }
+          .page-subtitle {
+        font-size: 1.2rem;
+        color: #00060f; /* darker gray for subtext */
+        }
+
+        .proposal-meta, .text-muted {
+        color: #374151 !important; /* darker gray instead of pale */
+        font-size: 1.2rem;
+        }
+
+        .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #111827;
+        }
+
+      .jrp-chip {
+        background: #eef2ff;
+        color: #3730a3;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border-radius: 999px;
+        padding: 0.3rem 0.7rem;
+    }
+
+    .btn-outline-secondary {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #00060f;
+    }
+
+    .btn-outline-success {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #00060f;
+    }
+
+    .credits {
+        color: #3730a3;
+    }
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg jrp-navbar fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'dashboard' %}">
+                <!-- SVG Logo -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="var(--jrp-primary)" class="bi bi-hexagon me-2" viewBox="0 0 16 16">
+                    <path d="M14 4.5v7a1 1 0 0 1-.5.866l-6 3.5a1 1 0 0 1-1 0l-6-3.5A1 1 0 0 1 0 11.5v-7a1 1 0 0 1 .5-.866l6-3.5a1 1 0 0 1 1 0l6 3.5A1 1 0 0 1 14 4.5z"/>
+                </svg>
+                Just Right Pitch
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto align-items-lg-center">
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'create_proposal' %}active{% endif %}" href="{% url 'create_proposal' %}">
+                    Create Proposal
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}">
+                    My Analytics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'my_clients' %}active{% endif %}" href="{% url 'my_clients' %}">
+                    My Clients
+                </a>
+            </li>
+
+            <!-- Profile Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-1"></i> Profile
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    {% if user.is_authenticated %}
+                    {% if user.directory_profile %}
+                <li>
+                <a class="dropdown-item" href="{% url 'freelancer_detail' user.directory_profile.id %}">
+                My Public Profile
+                </a>
+                </li>
+            {% else %}
+            <li>
+            <a class="dropdown-item" href="{% url 'edit_freelancer_profile' %}">
+                 Create Public Profile
+                </a>
+            </li>
+            {% endif %}
+            {% endif %}
+
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">Create/Edit Personal Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit_freelancer_profile' %}">Create/Edit Public Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'my_requests' %}">My Requests</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name in 'credits_overview credits_request' %}active{% endif %}"
+                    href="{% url 'credits_overview' %}">
+                    <h6 class="credits"><i class="bi bi-lightning-charge me-1"></i>
+                    Credits</h6>
+                    {% if user.profile.ai_credits is not None %}
+                <span class="badge bg-warning text-dark ms-1">{{ user.profile.ai_credits }}</span>
+                {% endif %}
+                </a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </li>
+
+            <!-- Public Freelancers Directory -->
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'freelancer_list' %}active{% endif %}" href="{% url 'freelancer_list' %}">
+                    Freelancers
+                </a>
+            </li>
+
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'freelancer_list' %}active{% endif %}" href="{% url 'freelancer_list' %}">
+                    Find Freelancers
+                </a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+            
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="jrp-footer mt-auto py-4">
+        <div class="container text-center small">
+            <div class="mb-2">
+                <a href="{% url 'about' %}" class="footer-link">About</a> ·
+                <a href="{% url 'privacy' %}" class="footer-link">Privacy</a> ·
+                <a href="{% url 'terms' %}" class="footer-link">Terms</a> ·
+                <a href="{% url 'contact' %}" class="footer-link">Contact</a>
+            </div>
+            <div>© {{ now|date:"Y" }} Just Right Pitch · All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

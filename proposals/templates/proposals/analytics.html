@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">📊 Proposal Analytics Dashboard</h2>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>Total Sent</h6>
+                    <h2>{{ total_sent }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>Total Won</h6>
+                    <h2>{{ total_won }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>Win Rate</h6>
+                    <h2>{{ win_rate }}%</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>Best Platform</h6>
+                    <h2>{{ best_platform }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Financial Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>💰 Average Value</h6>
+                    <h2>${{ avg_value }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>🕑 Outstanding Payments</h6>
+                    <p class="text-muted mb-0">See breakdown below</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h6>⭐ Top Clients</h6>
+                    <p class="text-muted mb-0">See breakdown below</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>📅 Monthly Proposal Activity</h5>
+                    <canvas id="monthlyChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>🎯 Wins by Confidence</h5>
+                    <canvas id="confidenceChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>🗓️ Day of Week Activity</h5>
+                    <canvas id="dowChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>📊 Platform Performance</h5>
+                    <canvas id="platformChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>👥 Top Clients</h5>
+                    <canvas id="clientsChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5>💸 Outstanding Payments</h5>
+                    <canvas id="paymentsChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JSON Data -->
+<script id="monthly-data" type="application/json">{{ monthly_activity|safe }}</script>
+<script id="confidence-data" type="application/json">{{ confidence_wins|safe }}</script>
+<script id="platform-data" type="application/json">{{ platform_performance|safe }}</script>
+<script id="dow-data" type="application/json">{{ day_of_week_activity|safe }}</script>
+<script id="clients-data" type="application/json">{{ top_clients|safe }}</script>
+<script id="payments-data" type="application/json">{{ outstanding_payments|safe }}</script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const monthlyData = JSON.parse(document.getElementById('monthly-data').textContent);
+    const confidenceData = JSON.parse(document.getElementById('confidence-data').textContent);
+    const platformData = JSON.parse(document.getElementById('platform-data').textContent);
+    const dowData = JSON.parse(document.getElementById('dow-data').textContent);
+    const clientsData = JSON.parse(document.getElementById('clients-data').textContent);
+    const paymentsData = JSON.parse(document.getElementById('payments-data').textContent);
+
+    // Monthly Chart
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'line',
+        data: {
+            labels: monthlyData.labels,
+            datasets: [{
+                label: 'Proposals Sent',
+                data: monthlyData.data,
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.3)',
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+
+    // Wins by Confidence Chart
+    new Chart(document.getElementById('confidenceChart'), {
+        type: 'bar',
+        data: {
+            labels: confidenceData.labels,
+            datasets: [{
+                label: 'Proposals Won',
+                data: confidenceData.data,
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+            }]
+        }
+    });
+
+    // Platform Performance
+    new Chart(document.getElementById('platformChart'), {
+        type: 'pie',
+        data: {
+            labels: platformData.labels,
+            datasets: [{
+                data: platformData.data,
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6f42c1']
+            }]
+        }
+    });
+
+    // Day of Week Activity
+    new Chart(document.getElementById('dowChart'), {
+        type: 'bar',
+        data: {
+            labels: dowData.labels,
+            datasets: [{
+                label: 'Proposals Sent',
+                data: dowData.data,
+                backgroundColor: '#17a2b8'
+            }]
+        }
+    });
+
+    // Top Clients
+    new Chart(document.getElementById('clientsChart'), {
+        type: 'bar',
+        data: {
+            labels: clientsData.labels,
+            datasets: [{
+                label: 'Proposals',
+                data: clientsData.data,
+                backgroundColor: '#6f42c1'
+            }]
+        }
+    });
+
+    // Outstanding Payments
+    new Chart(document.getElementById('paymentsChart'), {
+        type: 'doughnut',
+        data: {
+            labels: paymentsData.labels,
+            datasets: [{
+                data: paymentsData.data,
+                backgroundColor: ['#ffc107', '#dc3545', '#28a745', '#007bff']
+            }]
+        }
+    });
+});
+</script>
+
+{% endblock %}

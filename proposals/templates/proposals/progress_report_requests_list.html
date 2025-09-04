@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">📊 Progress Report Requests</h2>
+
+    {% if requests %}
+    <table class="table table-striped align-middle shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>User</th>
+                <th>Month</th>
+                <th>Platform</th>
+                <th>Status Filter</th>
+                <th>Requested At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in requests %}
+            <tr>
+                <td>{{ r.user.username }}</td>
+                <td>{{ r.month|date:"F Y" }}</td>
+                <td>{{ r.platform_filter }}</td>
+                <td>{{ r.status_filter }}</td>
+                <td>{{ r.requested_at|date:"M d, Y H:i" }}</td>
+                <td>
+                    <a href="{% url 'admin_generate_progress_report' r.id %}" class="btn btn-sm btn-success">
+                        <i class="bi bi-gear-fill"></i> Generate
+                    </a>
+                    <a href="{% url 'admin_reject_progress_report' r.id %}" class="btn btn-sm btn-danger">
+                        <i class="bi bi-x-circle"></i> Reject
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">No pending progress report requests.</div>
+    {% endif %}
+</div>
+{% endblock %}

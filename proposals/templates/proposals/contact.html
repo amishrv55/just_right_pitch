@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h2 class="mb-4 text-center">📩 Contact Us</h2>
+
+            <p class="text-center mb-4">
+                Have questions, feedback, or need support? We’d love to hear from you.  
+                Reach out to us via the form below or email us directly.
+            </p>
+
+            <!-- Contact Form -->
+            <form method="post" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea name="message" id="message" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+
+            <hr class="my-4">
+
+            <!-- Direct Contact Info -->
+            <div class="text-center">
+                <p><i class="bi bi-envelope"></i> <strong>Email:</strong> support@jrp.com</p>
+                <p><i class="bi bi-geo-alt"></i> <strong>Address:</strong> [Insert Company Address]</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
