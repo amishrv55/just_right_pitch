@@ -5,11 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from proposals import views as pviews
 from django.contrib.auth import views as auth_views
-from django.shortcuts import redirect
-
 
 urlpatterns = [
-    path("", lambda request: redirect("dashboard"), name="home"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("profile/", views.profile, name="profile"),
     path("signup/", views.signup, name="signup"),
